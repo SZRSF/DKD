@@ -14,8 +14,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
-
+        <dependency>
+            <groupId>cn.elegent.security</groupId>
+            <artifactId>elegent-security-verifier-gateway</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
