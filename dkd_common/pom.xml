@@ -50,18 +50,6 @@
             <artifactId>fastjson</artifactId>
         </dependency>
 
-        <!--权限上下文-->
-        <dependency>
-            <groupId>cn.elegent.security</groupId>
-            <artifactId>elegent-security-context</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <!--方法注解控制-->
-        <dependency>
-            <groupId>cn.elegent.security</groupId>
-            <artifactId>elegent-security-annotation</artifactId>
-            <version>1.1.0</version>
-        </dependency>
     </dependencies>
 
 </project>
