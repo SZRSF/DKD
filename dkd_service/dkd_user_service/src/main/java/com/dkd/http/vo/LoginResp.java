@@ -24,4 +24,9 @@ public class LoginResp{
      */
     private String token;
 
+    /**
+     * 刷新token
+     */
+    private String refreshToken;
+
 }

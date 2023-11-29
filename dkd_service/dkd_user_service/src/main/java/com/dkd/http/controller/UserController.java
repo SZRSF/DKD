@@ -66,6 +66,8 @@ public class UserController {
         if (authenticateResult.isAuthenticated()) {
             loginResp.setUserName(authenticateResult.getUserDetails().getUsername());
             loginResp.setToken(authenticateResult.getTokenDetails().getAccessToken());
+            // 刷新令牌返回封装
+            loginResp.setRefreshToken(authenticateResult.getTokenDetails().getRefreshToken());
             loginResp.setUserId(Integer.parseInt(authenticateResult.getUserDetails().getUserId()));
         } else {
             loginResp.setMsg(authenticateResult.getErrorInfo());
@@ -81,7 +83,9 @@ public class UserController {
     @GetMapping("/{id}")
     public UserVO findById(@PathVariable Integer id){
         UserEntity userEntity = userService.getById(id);
-        if(userEntity == null) return null;
+        if(userEntity == null) {
+            return null;
+        }
 
         return convert(userEntity);
     }
@@ -208,7 +212,9 @@ public class UserController {
     @GetMapping("/operatorList/{innerCode}")
     public List<UserVO> getOperatorListByInnerCode(@PathVariable String innerCode){
         var vm = vmService.getVMInfo(innerCode);
-        if(vm == null) return null;
+        if(vm == null) {
+            return null;
+        }
 
         return userService.getOperatorList(vm.getRegionId());
     }
@@ -221,7 +227,9 @@ public class UserController {
     @GetMapping("/repairerList/{innerCode}")
     public List<UserVO> getRepairerListByInnerCode(@PathVariable String innerCode){
         var vm = vmService.getVMInfo(innerCode);
-        if(vm == null) return null;
+        if(vm == null) {
+            return null;
+        }
         return userService.getRepairerList(vm.getRegionId());
     }
 
