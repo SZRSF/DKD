@@ -50,6 +50,18 @@
             <scope>test</scope>
         </dependency>
 
+        <!--微信支付-->
+        <dependency>
+            <groupId>cn.elegent.pay</groupId>
+            <artifactId>elegent-pay-wxpay</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--支付宝支付-->
+        <dependency>
+            <groupId>cn.elegent.pay</groupId>
+            <artifactId>elegent-pay-alipay</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
