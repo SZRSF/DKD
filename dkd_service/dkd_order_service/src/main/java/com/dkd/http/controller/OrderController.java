@@ -1,6 +1,7 @@
 package com.dkd.http.controller;
 
 import cn.elegent.pay.ElegentPay;
+import cn.elegent.pay.constant.Platform;
 import cn.elegent.pay.dto.PayRequest;
 import cn.elegent.pay.dto.PayResponse;
 import com.dkd.entity.OrderEntity;
@@ -24,6 +25,17 @@ public class OrderController {
 
     @Autowired
     private ElegentPay elegentPay;
+
+    /**
+     * 获取openId
+     *
+     * @param jsCode
+     * @return
+     */
+    @GetMapping("/openid/{jsCode}")
+    public String getOpenid(@PathVariable("jsCode")  String jsCode){
+        return elegentPay.getOpenid(jsCode, Platform.WX);
+    }
 
 
     /**
