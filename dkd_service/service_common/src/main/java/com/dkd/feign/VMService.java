@@ -1,19 +1,28 @@
 package com.dkd.feign;
 import com.dkd.feign.fallback.VmServiceFallbackFactory;
-import com.dkd.vo.ChannelVO;
-import com.dkd.vo.SkuVO;
-import com.dkd.vo.VendoutRunningVo;
-import com.dkd.vo.VmVO;
+import com.dkd.vo.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 /**
  * 售货机微服务feign接口
+ *
+ * @author zengzhicheng
  */
 @FeignClient(value = "vm-service",fallbackFactory = VmServiceFallbackFactory.class)
 public interface VMService{
+
+    /**
+     * 根据售货机编号查询策略
+     *
+     * @param innerCode
+     * @return
+     */
+    @GetMapping("/policy/vmPolicy/{innerCode}")
+    PolicyVO getPolicy(@PathVariable String innerCode);
 
     /**
      * 根据售货机编号查询售货机

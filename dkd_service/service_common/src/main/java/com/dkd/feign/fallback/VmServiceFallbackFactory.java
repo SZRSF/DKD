@@ -1,16 +1,16 @@
 package com.dkd.feign.fallback;
-import com.dkd.vo.ChannelVO;
-import com.dkd.vo.VendoutRunningVo;
+import com.dkd.vo.*;
 import com.google.common.collect.Lists;
 import com.dkd.feign.VMService;
-import com.dkd.vo.SkuVO;
-import com.dkd.vo.VmVO;
 import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @author zengzhicheng
+ */
 @Component
 @Slf4j
 public class VmServiceFallbackFactory implements FallbackFactory<VMService> {
@@ -69,6 +69,13 @@ public class VmServiceFallbackFactory implements FallbackFactory<VMService> {
             }
 
 
+            @Override
+            public PolicyVO getPolicy(String innerCode) {
+                PolicyVO policyVO=new PolicyVO();
+                policyVO.setInnerCode(innerCode);
+                policyVO.setDiscount(100);
+                return policyVO;
+            }
 
         };
     }
