@@ -74,6 +74,12 @@
             <artifactId>elegent-lock-consul</artifactId>
             <version>1.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.elegent.data</groupId>
+            <artifactId>elegent-data-elasticsearch7</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

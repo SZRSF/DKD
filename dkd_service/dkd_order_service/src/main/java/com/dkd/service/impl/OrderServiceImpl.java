@@ -1,6 +1,8 @@
 package com.dkd.service.impl;
 
 import cn.elegent.ac.ElegentAC;
+import cn.elegent.data.core.ElegentQueryWapper;
+import cn.elegent.data.core.vo.Pager;
 import cn.elegent.lock.ElegentLock;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -38,6 +40,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     private ElegentAC elegentAC;
+
+    @Autowired
+    private OrderEsService orderEsService;
+
+    @Override
+    public Pager<OrderVO> search(Integer pageIndex, Integer pageSize, String orderNo, String openId, String startDate, String endDate) {
+        ElegentQueryWapper elegentQueryWapper=new ElegentQueryWapper();
+        elegentQueryWapper.from("order");
+        if(orderNo!=null){
+            elegentQueryWapper.eq("order_no",orderNo);
+        }
+        if(openId!=null){
+            elegentQueryWapper.eq("open_id",openId);
+        }
+        if(startDate!=null && endDate!=null){
+            elegentQueryWapper.between(  "create_time",startDate, endDate  );
+        }
+        return orderEsService.page(elegentQueryWapper, pageIndex, pageSize);
+    }
 
     @Override
     public OrderEntity getByOrderNo(String orderNo) {

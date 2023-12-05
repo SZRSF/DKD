@@ -1,5 +1,6 @@
 package com.dkd.http.controller;
 
+import cn.elegent.data.core.vo.Pager;
 import cn.elegent.idempotence.annotation.ElegentIdem;
 import cn.elegent.pay.ElegentPay;
 import cn.elegent.pay.constant.Platform;
@@ -8,6 +9,7 @@ import cn.elegent.pay.dto.PayResponse;
 import cn.elegent.pay.dto.RefundRequest;
 import com.dkd.entity.OrderEntity;
 import com.dkd.service.OrderService;
+import com.dkd.vo.OrderVO;
 import com.dkd.vo.PayVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +82,27 @@ public class OrderController {
         refundRequest.setOrderSn(orderNo);
         refundRequest.setRequestNo(System.currentTimeMillis()+"");
         return elegentPay.refund(refundRequest, platform);
+    }
+
+
+    /**
+     * 搜索
+     * @param pageIndex
+     * @param pageSize
+     * @param orderNo
+     * @param openId
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @GetMapping("/search")
+    public Pager<OrderVO> search(
+            @RequestParam(value = "pageIndex",required = false,defaultValue = "1") Integer pageIndex,
+            @RequestParam(value = "pageSize",required = false,defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "orderNo",required = false,defaultValue = "") String orderNo,
+            @RequestParam(value = "openId",required = false,defaultValue = "") String openId,
+            @RequestParam(value = "startDate",required = false,defaultValue = "") String startDate,
+            @RequestParam(value = "endDate",required = false,defaultValue = "") String endDate){
+        return orderService.search(pageIndex,pageSize,orderNo,openId,startDate,endDate);
     }
 }
