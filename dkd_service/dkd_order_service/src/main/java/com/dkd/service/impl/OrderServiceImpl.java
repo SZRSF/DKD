@@ -4,9 +4,11 @@ import cn.elegent.ac.ElegentAC;
 import cn.elegent.lock.ElegentLock;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dkd.config.TopicConfig;
 import com.dkd.constant.OrderStatus;
 import com.dkd.constant.PayStatus;
 import com.dkd.dao.OrderDao;
+import com.dkd.dto.OrderCheckDTO;
 import com.dkd.feign.UserService;
 import com.dkd.vo.*;
 import com.dkd.entity.OrderEntity;
@@ -33,6 +35,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     private ElegentLock elegentLock;
+
+    @Autowired
+    private ElegentAC elegentAC;
 
     @Override
     public OrderEntity getByOrderNo(String orderNo) {
@@ -109,9 +114,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 orderEntity.setBill(bill);
             }
         }
-
         //保存
         save(orderEntity);
+
+        //将订单放到延迟队列中，5分钟后检查支付状态！！！！！！！！！！！！！！！！！！
+        OrderCheckDTO orderCheck = new OrderCheckDTO();
+        orderCheck.setOrderNo(orderEntity.getOrderNo());
+        try {
+            elegentAC.delayPublish(TopicConfig.ORDER_CHECK_TOPIC,orderCheck,300);
+        } catch (Exception e) {
+            log.error("send to emq error",e);
+        }
+
         return orderEntity;
     }
 

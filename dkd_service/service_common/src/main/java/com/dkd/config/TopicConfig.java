@@ -24,4 +24,9 @@ public class TopicConfig {
      */
     public final static String VMS_RESULT_TOPIC = "server/vms/result";
 
+    /**
+     * 延迟订单主题
+     */
+    public final static String ORDER_CHECK_TOPIC = "server/order/check";
+
 }
