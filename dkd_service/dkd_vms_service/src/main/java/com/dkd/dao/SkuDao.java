@@ -18,7 +18,7 @@ public interface SkuDao extends BaseMapper<SkuEntity> {
     @Select("select * from tb_sku where sku_id=#{skuId} limit 1")
     SkuEntity getById(long skuId);
 
-    @Select("SELECT sc.*,IFNULL( p.discount,100) AS discount, ROUND(sc.price*discount/100) AS real_price FROM \n" +
+    @Select("SELECT sc.*,IFNULL( p.discount,100) AS discount, IFNULL(ROUND(sc.price*discount/100), sc.price) AS real_price FROM \n" +
             "(SELECT s.sku_id,sku_name,sku_image image,price,class_id,unit, c.capacity FROM tb_sku s \n" +
             "INNER JOIN \n" +
             "(\n" +

@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * @author zengzhicheng
+ */
 @Component
 @Slf4j
 public class CallBackServiceImpl implements CallBackService {
@@ -40,13 +43,33 @@ public class CallBackServiceImpl implements CallBackService {
         log.info("支付失败回调{}",orderSn);
     }
 
+    /**
+     * 修改订单状态为退款完成
+     * @param orderSn
+     */
     @Override
     public void successRefund(String orderSn) {
-
+        log.info("退款成功回调{}",orderSn);
+        OrderEntity orderEntity = orderService.getByOrderNo(orderSn);
+        if(orderEntity!=null) {
+            //将状态设置退款成功
+            orderEntity.setPayStatus(PayStatus.PAY_STATUS_REFUNDIED);
+            orderService.updateById(orderEntity);
+        }
     }
 
+    /**
+     * 退款失败打日志记录--修改状态为已支付
+     * @param orderSn
+     */
     @Override
     public void failRefund(String orderSn) {
-
+        log.info("退款失败回调{}",orderSn);
+        OrderEntity orderEntity = orderService.getByOrderNo(orderSn);
+        if(orderEntity!=null) {
+            //将状态再改回支付成功
+            orderEntity.setPayStatus(PayStatus.PAY_STATUS_PAYED);
+            orderService.updateById(orderEntity);
+        }
     }
 }

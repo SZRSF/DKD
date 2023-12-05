@@ -4,6 +4,7 @@ import cn.elegent.pay.ElegentPay;
 import cn.elegent.pay.constant.Platform;
 import cn.elegent.pay.dto.PayRequest;
 import cn.elegent.pay.dto.PayResponse;
+import cn.elegent.pay.dto.RefundRequest;
 import com.dkd.entity.OrderEntity;
 import com.dkd.service.OrderService;
 import com.dkd.vo.PayVO;
@@ -59,5 +60,23 @@ public class OrderController {
         //openid
         param.setOpenid(payVO.getOpenId());
         return elegentPay.requestPay(param, tradeType, platform);
+    }
+
+
+    /**
+     * 退款
+     *
+     * @param orderNo
+     * @param platform
+     * @return
+     */
+    @GetMapping("/refund/{orderNo}/{platform}")
+    public boolean refund(@PathVariable("orderNo") String orderNo, @PathVariable("platform") String platform) {
+        RefundRequest refundRequest = new RefundRequest();
+        refundRequest.setTotalFee(1);
+        refundRequest.setRefundAmount(1);
+        refundRequest.setOrderSn(orderNo);
+        refundRequest.setRequestNo(System.currentTimeMillis()+"");
+        return elegentPay.refund(refundRequest, platform);
     }
 }
