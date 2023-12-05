@@ -19,4 +19,9 @@ public class TopicConfig {
         return "vm/"+innerCode+"/vendout";
     }
 
+    /**
+     * 出货结果主题（终端->服务端）
+     */
+    public final static String VMS_RESULT_TOPIC = "server/vms/result";
+
 }
