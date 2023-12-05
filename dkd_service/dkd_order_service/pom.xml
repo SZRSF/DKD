@@ -62,6 +62,12 @@
             <artifactId>elegent-pay-alipay</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.elegent.ac</groupId>
+            <artifactId>elegent-AC-mqtt</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

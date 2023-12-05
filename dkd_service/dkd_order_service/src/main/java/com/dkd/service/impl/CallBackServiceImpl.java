@@ -1,12 +1,19 @@
 package com.dkd.service.impl;
 
 
+import cn.elegent.ac.ElegentAC;
 import cn.elegent.pay.CallBackService;
+import cn.elegent.pay.ElegentPay;
+import com.dkd.config.TopicConfig;
 import com.dkd.constant.OrderStatus;
 import com.dkd.constant.PayStatus;
+import com.dkd.dto.VendoutDTO;
 import com.dkd.entity.OrderEntity;
+import com.dkd.feign.VMService;
 import com.dkd.service.OrderService;
+import com.dkd.vo.ChannelVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +28,12 @@ public class CallBackServiceImpl implements CallBackService {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private VMService vmService;
+
+    @Autowired
+    private ElegentAC elegentAC;
+
     @Override
     public void successPay(String orderSn) {
         log.info("支付成功回调{}",orderSn);
@@ -32,8 +45,15 @@ public class CallBackServiceImpl implements CallBackService {
                 orderEntity.setStatus(OrderStatus.ORDER_STATUS_PAYED);
                 //支付状态  成功
                 orderEntity.setPayStatus(PayStatus.PAY_STATUS_PAYED) ;
+                // 得到出货货道
+                ChannelVO channel = vmService.getChannel(orderEntity.getInnerCode(), orderEntity.getSkuId());
+                // 货道编号
+                orderEntity.setChannelCode(channel.getChannelCode());
                 orderService.updateById( orderEntity );
-                //todo: 发货
+                // 发货
+                VendoutDTO vendoutDTO = new VendoutDTO();
+                BeanUtils.copyProperties(orderEntity, vendoutDTO);
+                elegentAC.publish(TopicConfig.getVendoutTopic( orderEntity.getInnerCode()), vendoutDTO);
             }
         }
     }
