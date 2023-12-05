@@ -1,4 +1,5 @@
 package com.dkd.feign;
+import com.dkd.dto.VendoutRunningDTO;
 import com.dkd.feign.fallback.VmServiceFallbackFactory;
 import com.dkd.vo.*;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,6 +15,15 @@ import java.util.List;
  */
 @FeignClient(value = "vm-service",fallbackFactory = VmServiceFallbackFactory.class)
 public interface VMService{
+
+    /**
+     * 新增售货机日志
+     *
+     * @param vendoutRunning
+     * @return 是否成功
+     */
+    @PostMapping("/vendoutRunning")
+    boolean addVendoutRunning(@RequestBody VendoutRunningDTO vendoutRunning);
 
     /**
      * 根据售货机编号查询策略

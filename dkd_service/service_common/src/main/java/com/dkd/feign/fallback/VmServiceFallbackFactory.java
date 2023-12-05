@@ -1,4 +1,5 @@
 package com.dkd.feign.fallback;
+import com.dkd.dto.VendoutRunningDTO;
 import com.dkd.vo.*;
 import com.google.common.collect.Lists;
 import com.dkd.feign.VMService;
@@ -77,6 +78,10 @@ public class VmServiceFallbackFactory implements FallbackFactory<VMService> {
                 return policyVO;
             }
 
+            @Override
+            public boolean addVendoutRunning(VendoutRunningDTO vendoutRunning) {
+                return false;
+            }
         };
     }
 }
