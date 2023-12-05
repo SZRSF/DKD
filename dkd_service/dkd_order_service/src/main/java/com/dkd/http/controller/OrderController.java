@@ -1,5 +1,6 @@
 package com.dkd.http.controller;
 
+import cn.elegent.idempotence.annotation.ElegentIdem;
 import cn.elegent.pay.ElegentPay;
 import cn.elegent.pay.constant.Platform;
 import cn.elegent.pay.dto.PayRequest;
@@ -45,6 +46,7 @@ public class OrderController {
      * @param payVO
      * @return
      */
+    @ElegentIdem(type="sn" ,name="requestId")
     @PostMapping("/requestPay/{tradeType}/{platform}")
     public PayResponse requestPay(@RequestBody PayVO payVO, @PathVariable("tradeType") String tradeType, @PathVariable("platform") String platform) {
         //创建订单

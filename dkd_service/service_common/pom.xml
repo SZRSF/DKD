@@ -94,6 +94,13 @@
             <artifactId>minio</artifactId>
             <version>8.0.3</version>
         </dependency>
+
+        <!--幂等性框架-->
+        <dependency>
+            <groupId>cn.elegent.idem</groupId>
+            <artifactId>elegent-idem-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
