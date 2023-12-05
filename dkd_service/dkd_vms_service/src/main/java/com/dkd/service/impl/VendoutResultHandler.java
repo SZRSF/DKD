@@ -1,7 +1,9 @@
 package com.dkd.service.impl;
 
 import cn.elegent.ac.ACHandler;
+import cn.elegent.ac.ElegentAC;
 import cn.elegent.ac.annotation.Topic;
+import cn.elegent.lock.ElegentLock;
 import com.dkd.config.TopicConfig;
 import com.dkd.constant.VMRuningStatus;
 import com.dkd.dto.VendoutResultDTO;
@@ -27,6 +29,9 @@ public class VendoutResultHandler implements ACHandler<VendoutResultDTO> {
     @Autowired
     private VendoutRunningService vendoutRunningService;
 
+    @Autowired
+    private ElegentLock elegentLock;
+
     @Override
     public void process(String s, VendoutResultDTO vendoutResultDTO) throws Exception {
         log.info("接收到出货结果,{}", vendoutResultDTO);
@@ -42,5 +47,8 @@ public class VendoutResultHandler implements ACHandler<VendoutResultDTO> {
             //发货失败
             vendoutRunningService.updateStatus(vendoutResultDTO.getOrderNo(), VMRuningStatus.VENDOUT_FAIL);
         }
+
+        // 释放锁
+        elegentLock.unLock( vendoutResultDTO.getInnerCode()+"-"+vendoutResultDTO.getSkuId());
     }
 }

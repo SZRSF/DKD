@@ -1,5 +1,7 @@
 package com.dkd.service.impl;
 
+import cn.elegent.ac.ElegentAC;
+import cn.elegent.lock.ElegentLock;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.dkd.constant.OrderStatus;
@@ -29,6 +31,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ElegentLock elegentLock;
+
     @Override
     public OrderEntity getByOrderNo(String orderNo) {
         QueryWrapper<OrderEntity> qw = new QueryWrapper<>();
@@ -42,6 +47,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         //判断库存
         if (!vmService.hasCapacity(payVO.getInnerCode(), Long.valueOf(payVO.getSkuId()))) {
             throw new LogicException("商品库存不足");
+        }
+
+        // 加锁，判断上次交易是否完成
+        boolean lock = elegentLock.lock(payVO.getInnerCode() + "-" + payVO.getSkuId(), 60, false);
+        if (!lock) {
+            throw new LogicException("上一笔交易未完成，请稍后！");
         }
 
         //创建订单对象
