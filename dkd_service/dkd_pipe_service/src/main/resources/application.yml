@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: pipe-service
+server:
+  port: 8999
+elegent:
+  ac:
+    host: 127.0.0.1
+    port: 1883
+    clientId: transmitServer
+    username: admin
+    password: public
+    keepAliveInterval: 30
+    connectionTimeout: 60
+  pipe:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    passwd: 123456
+    tables:
+      - dkd_order:tb_order

@@ -17,6 +17,7 @@
         <module>dkd_order_service</module>
         <module>dkd_user_service</module>
         <module>dkd_production_service</module>
+        <module>dkd_pipe_service</module>
     </modules>
     <dependencies>
         <dependency>

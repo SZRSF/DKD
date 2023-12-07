@@ -80,6 +80,12 @@
             <artifactId>elegent-data-elasticsearch7</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>cn.elegent.pipe</groupId>
+            <artifactId>elegent-pipe-client</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
 </project>
